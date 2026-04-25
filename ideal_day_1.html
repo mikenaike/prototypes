@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saturday, April 25</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #FAF7F2;
+    --text: #2C2825;
+    --muted: #9E948A;
+    --accent: #D4643B;
+    --accent-light: #F5E6DE;
+    --check-bg: #E8E2DA;
+    --done: #C4BDB5;
+    --card: #FFFFFF;
+    --shadow: 0 1px 3px rgba(44,40,37,0.06);
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1.25rem 4rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1.5px solid var(--check-bg);
+  }
+
+  header p.date {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+  }
+
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .progress-bar {
+    margin-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--check-bg);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+    min-width: 40px;
+    text-align: right;
+  }
+
+  .block {
+    margin-bottom: 2rem;
+  }
+
+  .block-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .block-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .block-icon.morning { background: #FEF3C7; }
+  .block-icon.midday { background: #DBEAFE; }
+  .block-icon.afternoon { background: #E0E7FF; }
+  .block-icon.evening { background: #EDE9FE; }
+
+  .block-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text);
+  }
+
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .item {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .item:hover {
+    box-shadow: 0 2px 8px rgba(44,40,37,0.1);
+  }
+
+  .item.checked {
+    background: var(--bg);
+    box-shadow: none;
+  }
+
+  .item.checked .item-text {
+    text-decoration: line-through;
+    color: var(--done);
+  }
+
+  .item.checked .item-tag {
+    opacity: 0.4;
+  }
+
+  .checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    border: 2px solid var(--check-bg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-top: 1px;
+  }
+
+  .item.checked .checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .checkbox svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s ease;
+  }
+
+  .item.checked .checkbox svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .item-text {
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--text);
+    transition: all 0.25s ease;
+  }
+
+  .item-tag {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    transition: opacity 0.25s ease;
+  }
+
+  .tag-health { background: #DCFCE7; color: #3D7A50; }
+  .tag-errand { background: #FEF3C7; color: #92750C; }
+  .tag-focus { background: #DBEAFE; color: #3B6FB5; }
+  .tag-admin { background: #F3E8FF; color: #7C3AED; }
+  .tag-social { background: #FFE4E6; color: #BE123C; }
+  .tag-fun { background: #E0E7FF; color: #4338CA; }
+  .tag-creative { background: #CCFBF1; color: #0F766E; }
+
+  .note {
+    margin-top: 2.5rem;
+    padding: 1.25rem;
+    background: var(--accent-light);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent);
+  }
+
+  .note p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--text);
+    opacity: 0.85;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .block {
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .block:nth-child(2) { animation-delay: 0.05s; }
+  .block:nth-child(3) { animation-delay: 0.1s; }
+  .block:nth-child(4) { animation-delay: 0.15s; }
+  .block:nth-child(5) { animation-delay: 0.2s; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="date">Saturday, April 25</p>
+  <h1>Ideal Day</h1>
+  <div class="progress-bar">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-label" id="progressLabel">0 / 15</span>
+  </div>
+</header>
+
+<div id="blocks"></div>
+
+<div class="note">
+  <p>Body first, brain second, admin in a batch, social while you wait, creative energy in the afternoon, movie as the reward.</p>
+</div>
+
+<script>
+const data = [
+  {
+    title: "Morning",
+    icon: "☀️",
+    timeClass: "morning",
+    items: [
+      { text: "Take prep", tag: "health", tagLabel: "Health" },
+      { text: "PT stretches", tag: "health", tagLabel: "Health" },
+      { text: "Gym", tag: "health", tagLabel: "Health" },
+      { text: "Pick up natto from Ten Ichi", tag: "errand", tagLabel: "Errand" },
+    ]
+  },
+  {
+    title: "Midday",
+    icon: "🌤",
+    timeClass: "midday",
+    items: [
+      { text: "Return Amazon stuff", tag: "errand", tagLabel: "Errand" },
+      { text: "Portfolio — 1 pomodoro", tag: "focus", tagLabel: "Focus" },
+      { text: "Check all bank statements", tag: "admin", tagLabel: "Admin" },
+      { text: "Push perishing financials to email notifications", tag: "admin", tagLabel: "Admin" },
+    ]
+  },
+  {
+    title: "Afternoon",
+    icon: "✨",
+    timeClass: "afternoon",
+    items: [
+      { text: "Plan rooftop housewarming — create Partiful", tag: "social", tagLabel: "Social" },
+      { text: "Request Tomorrowland $$ from the girls", tag: "social", tagLabel: "Social" },
+      { text: "Hit up Erin for bachelorette", tag: "social", tagLabel: "Social" },
+      { text: "Buy / plan ilovedance classes", tag: "fun", tagLabel: "Fun" },
+      { text: "Learn Pinky Up", tag: "fun", tagLabel: "Fun" },
+      { text: "Vibe code AI style assistant", tag: "creative", tagLabel: "Creative" },
+    ]
+  },
+  {
+    title: "Evening",
+    icon: "🌙",
+    timeClass: "evening",
+    items: [
+      { text: "Watch Project Hail Mary", tag: "fun", tagLabel: "Fun" },
+    ]
+  },
+];
+
+const totalItems = data.reduce((sum, b) => sum + b.items.length, 0);
+let checkedCount = 0;
+
+function updateProgress() {
+  checkedCount = document.querySelectorAll('.item.checked').length;
+  const pct = Math.round((checkedCount / totalItems) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = checkedCount + ' / ' + totalItems;
+}
+
+const container = document.getElementById('blocks');
+
+data.forEach(block => {
+  const section = document.createElement('div');
+  section.className = 'block';
+  section.innerHTML = `
+    <div class="block-header">
+      <div class="block-icon ${block.timeClass}">${block.icon}</div>
+      <span class="block-title">${block.title}</span>
+    </div>
+    <div class="items"></div>
+  `;
+
+  const itemsEl = section.querySelector('.items');
+
+  block.items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'item';
+    el.innerHTML = `
+      <div class="checkbox">
+        <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="item-content">
+        <div class="item-text">${item.text}</div>
+        <span class="item-tag tag-${item.tag}">${item.tagLabel}</span>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      el.classList.toggle('checked');
+      updateProgress();
+    });
+    itemsEl.appendChild(el);
+  });
+
+  container.appendChild(section);
+});
+</script>
+
+</body>
+</html>
